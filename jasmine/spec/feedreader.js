@@ -102,9 +102,8 @@ $(function () {
     describe('Initial Entries', function () {
         /* The following test ensures when the loadFeed function is called and
          * completes its work, there is at least a single .entry element 
-         * within the .feed container. */
-
-        /* since loadFeed() is asynchronous, it will be invoked using Jasmine's 
+         * within the .feed container. 
+         * since loadFeed() is asynchronous, it will be invoked using Jasmine's 
          * beforeEach function, where the done() function is passed to
          */
         beforeEach(function (done) {
@@ -121,7 +120,7 @@ $(function () {
 
         /* Once the feed has been loaded as signalled by the done() function, 
          * a test is run to ensure that it's not empty by checking the content of
-         * the feed DOM element */
+         * the .entry element by accessing the .feed DOM */
          it('are loaded', function (done) {
             expect($('.feed').find('.entry').length).not.toBe(0);
             done();
