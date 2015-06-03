@@ -41,7 +41,7 @@ $(function () {
             for (var i = 0; i < allFeedsLen; i++) {
                 expect(allFeeds[i].url).toBeDefined();
                 expect(allFeeds[i].url.length).not.toBe(0);
-            };            
+            }            
         });
 
         /* A test that loops through each feed
@@ -52,7 +52,7 @@ $(function () {
             for (var i = 0; i <  allFeedsLen; i++) {
                 expect(allFeeds[i].name).toBeDefined();
                 expect(allFeeds[i].name.length).not.toBe(0);
-            };            
+            }            
         });
 
     });
@@ -118,18 +118,19 @@ $(function () {
             });
          });
 
-        /* Once the feed has been loaded as signalled by the done() function, 
-         * a test is run to ensure that it's not empty by checking the content of
-         * the .entry element by accessing the .feed DOM */
+        /* Once the feed has been loaded as signaled by the done() function, 
+         * a test is run to ensure that it's not empty by checking the content 
+         * of the .entry within .feed DOM */
          it('are loaded', function (done) {
-            expect($('.feed').find('.entry').length).not.toBe(0);
+            expect($('.feed .entry').length).not.toBe(0);
             done();
          });
 
     });      
 
-    /* The "New Feed Selection" includes a test to check if the content of new feeds
-     * are loaed.  It includes a beforeEach function as well as a test "is rendered"
+    /* The "New Feed Selection" includes a test to check if the content of new 
+     * feeds are loaed.  It includes a beforeEach function as well as a test 
+     * "is rendered"
      */
     describe('New Feed Selection', function () { 
         /* a test that ensures when a new feed is loaded
@@ -139,28 +140,34 @@ $(function () {
          var $title1, $content1, $title2, $content2;
 
          beforeEach(function (done) {
-            /* The first entry is loaded by default, here we get save the title
-             * and content of the feed
+            /* The first entry is loaded and a callback is used to save the 
+             * title and content of the feed
              */
-            $title1 = $('.header-title').text();
-            $content1 = $('.entry').text();
+            loadFeed(3, function() {
+                $title1 = $('.header-title').text();
+                $content1 = $('.entry').text();
+            });
             /*laod the next feed*/
             loadFeed(1, function () {
+                /* The content of the feed is saved inside a callback within 
+                 * loadFeed as opposed to outside the loadFeed function since 
+                 * it runs asynchronously.  Alternatively, the content can be 
+                 * retrieved after the done function is signaled within the 
+                 * test method  
+                 */
+                $title2 = $('.header-title').text();
+                $content2 = $('.entry').text();
                 done();
             });      
          });
 
-         /* Once the new feed has been loaded as signalled by the done() function, 
-          * a test is run to ensure that the content is not the same as the previous
-          * feed
+         /* Once the new feed has been loaded as signaled by the done function, 
+          * a test is run to ensure that the content is not the same as the 
+          * previous feed
           */
          it('is rendered', function (done) {
-            /* Note that the content of the new feed is accessed here to ensure that 
-             * the feed has been loaded as indicated by the done() function */
-            $title2 = $('.header-title').text();
-            $content2 = $('.entry').text();
-            /* If both the text of title or content of the old and new feed don't match, 
-             * then a new feed was indeed loaded */
+            /* If both the text of title or content of the old and new feed 
+             * don't match, then a new feed was indeed loaded */
             expect($title1 === $title2 || $content1 === $content2).not.toBe(true);
             done();
          });
